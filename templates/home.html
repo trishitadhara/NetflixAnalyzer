@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Recommendation Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Netflix Recommendation Dashboard</h1>
+
+    <div id="user-input">
+        <h2>Enter a Movie Title</h2>
+        <form id="recommendation-form">
+            <label for="movie-title">Movie Title:</label>
+            <input type="text" id="movie-title" name="movieTitle" required>
+            <button type="submit">Get Recommendations</button>
+        </form>
+    </div>
+
+    <div id="recommendations">
+        <h2>Movie Recommendations</h2>
+        <ul id="recommendation-list">
+            <!-- Recommendations will be added dynamically using JavaScript -->
+        </ul>
+    </div>
+
+    <div id="trend-analysis">
+        <h2>Trend Analysis</h2>
+        {% include 'report.html' %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+    <script>
+        // Trend Analysis Chart (unchanged)
+
+        // User Input and Recommendations
+        document.getElementById('recommendation-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+            // Get user input
+            var userInput = document.getElementById('movie-title').value;
+
+            // Make a request to the server to get recommendations
+            fetch('/get_recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ movieTitle: userInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the recommendation list dynamically
+                var recommendationList = document.getElementById('recommendation-list');
+                recommendationList.innerHTML = ''; // Clear previous recommendations
+
+                data.recommendations.forEach(function(movie) {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = movie;
+                    recommendationList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

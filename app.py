@@ -64,7 +64,7 @@ def home():
     trend_data = get_trend_data()
 
     # Render home page with trend analysis
-    return render_template('index.html', trend_data=trend_data)
+    return render_template('home.html', trend_data=trend_data)
 
 # Route for getting recommendations based on user input
 @app.route('/get_recommendations', methods=['POST'])
