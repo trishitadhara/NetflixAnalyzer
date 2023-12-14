@@ -18,7 +18,7 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 from nltk.stem import PorterStemmer
 import re
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, static_url_path='/NetflixAnalyzer/static')
 
 # Load your Netflix dataset (replace 'netflix_data.csv' with your actual dataset)
 df = pd.read_csv("netflix_titles.csv")
@@ -58,7 +58,7 @@ def get_trend_data():
     return genre_counts.to_dict()
 
 # Define routes
-@app.route('/')
+@app.route('/NetflixAnalyzer/')
 def home():
     # Get initial trend data for the home page
     trend_data = get_trend_data()
